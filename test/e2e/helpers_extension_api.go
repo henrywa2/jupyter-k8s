@@ -16,8 +16,8 @@ import (
 	"github.com/onsi/ginkgo/v2"
 )
 
-// createConnectionAccessReviewAsUser creates a ConnectionAccessReview with kubectl impersonation
-func createConnectionAccessReviewAsUser(filepath, user string, groups []string) error {
+// createObjectAsUser creates a Kubernetes object with kubectl impersonation
+func createObjectAsUser(filepath, user string, groups []string) error {
 	ginkgo.GinkgoHelper()
 	args := []string{"create", "-f", filepath, "--as=" + user}
 	for _, group := range groups {
@@ -58,4 +58,28 @@ func createConnectionAccessReviewAndGetStatus(filepath string) (allowed bool, no
 	}
 
 	return allowed, notFound, reason, nil
+}
+
+// updateObjectAsUser updates a Kubernetes object with kubectl impersonation
+func updateObjectAsUser(filepath, user string, groups []string) error {
+	ginkgo.GinkgoHelper()
+	args := []string{"apply", "-f", filepath, "--as=" + user}
+	for _, group := range groups {
+		args = append(args, "--as-group="+group)
+	}
+	cmd := exec.Command("kubectl", args...)
+	_, err := utils.Run(cmd)
+	return err
+}
+
+// deleteWorkspaceAsUser deletes a workspace with kubectl impersonation
+func deleteWorkspaceAsUser(name, user string, groups []string) error {
+	ginkgo.GinkgoHelper()
+	args := []string{"delete", "workspace", name, "-n", "default", "--as=" + user}
+	for _, group := range groups {
+		args = append(args, "--as-group="+group)
+	}
+	cmd := exec.Command("kubectl", args...)
+	_, err := utils.Run(cmd)
+	return err
 }
