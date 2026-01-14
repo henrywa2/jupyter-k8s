@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: workspace-manager
+  name: workspace-manager-role
   namespace: default
   labels:
     jk8s/e2e: ownership-test

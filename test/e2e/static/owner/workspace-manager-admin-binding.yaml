@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: workspace-manager-admin
+  name: workspace-manager-admin-binding
   namespace: default
   labels:
     jk8s/e2e: ownership-test

@@ -16,18 +16,6 @@ import (
 	"github.com/onsi/ginkgo/v2"
 )
 
-// createObjectAsUser creates a Kubernetes object with kubectl impersonation
-func createObjectAsUser(filepath, user string, groups []string) error {
-	ginkgo.GinkgoHelper()
-	args := []string{"create", "-f", filepath, "--as=" + user}
-	for _, group := range groups {
-		args = append(args, "--as-group="+group)
-	}
-	cmd := exec.Command("kubectl", args...)
-	_, err := utils.Run(cmd)
-	return err
-}
-
 // getFixturePath constructs the file path for extension API test fixtures
 func getFixturePath(filename string) string {
 	return BuildTestResourcePath(filename, extensionAPIGroupDir, extensionAPISubgroupDir)
@@ -64,18 +52,6 @@ func createConnectionAccessReviewAndGetStatus(filepath string) (allowed bool, no
 func updateObjectAsUser(filepath, user string, groups []string) error {
 	ginkgo.GinkgoHelper()
 	args := []string{"apply", "-f", filepath, "--as=" + user}
-	for _, group := range groups {
-		args = append(args, "--as-group="+group)
-	}
-	cmd := exec.Command("kubectl", args...)
-	_, err := utils.Run(cmd)
-	return err
-}
-
-// deleteWorkspaceAsUser deletes a workspace with kubectl impersonation
-func deleteWorkspaceAsUser(name, user string, groups []string) error {
-	ginkgo.GinkgoHelper()
-	args := []string{"delete", "workspace", name, "-n", "default", "--as=" + user}
 	for _, group := range groups {
 		args = append(args, "--as-group="+group)
 	}
