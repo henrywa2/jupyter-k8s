@@ -8,7 +8,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: workspace-manager
+  name: workspace-manager-role
 subjects:
 - kind: User
   name: user-2
